@@ -1,7 +1,7 @@
 #!/bin/sh
 . ./.env
 export HOST_PORT=${HOST_PORT:-80}
-docker build -t api-asdf . || exit 1
+docker build -t yw/goku:dev . || exit 1
 docker run \
         -e DOCKER_PORT=${DOCKER_PORT} \
         -e POSTGRES_DBNAME=${POSTGRES_DBNAME} \
@@ -11,5 +11,5 @@ docker run \
         -e POSTGRES_USER=${POSTGRES_USER} \
         --rm \
         -p ${HOST_PORT}:${DOCKER_PORT} \
-        --name api-asdf \
-        api-asdf
+        --name goku \
+        yw/goku:dev
