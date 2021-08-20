@@ -1,10 +1,10 @@
 package main
 
 import (
-	"os"
 	"github.com/gin-gonic/gin"
-	"whatsinme-api/models"
+	"os"
 	"whatsinme-api/controllers"
+	"whatsinme-api/models"
 )
 
 func main() {
@@ -15,8 +15,9 @@ func main() {
 
 	router.GET("/accounts", controllers.GetAccounts)
 	router.GET("/accounts/:id", controllers.GetAccount)
-	router.PUT("/accounts/:id", controllers.UpdateAccount)
 	router.POST("/accounts", controllers.PostAccount)
+	router.PUT("/accounts/:id", controllers.UpdateAccount)
+	router.DELETE("/accounts/:id", controllers.DeleteAccount)
 
 	router.Run("0.0.0.0:" + os.Getenv("APP_PORT"))
 }

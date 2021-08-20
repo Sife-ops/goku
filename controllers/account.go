@@ -53,3 +53,9 @@ func PostAccount(c *gin.Context) {
 	}
 	models.DB.Create(&newAccount)
 }
+
+func DeleteAccount(c *gin.Context) {
+	id := c.Param("id")
+	models.DB.Delete(&models.Account{}, id)
+	c.IndentedJSON(http.StatusOK, "true")
+}
