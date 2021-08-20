@@ -1,9 +1,21 @@
 package main
 
 import (
+    "strconv"
 	"net/http"
-
 	"github.com/gin-gonic/gin"
+    "database/sql"
+    "fmt"
+    _ "github.com/lib/pq"
+)
+
+// postgres01 on eltreum
+const (
+    host        = "207.246.94.25"
+    port        = 5433
+    user        = "postgres"
+    password    = "postgres"
+    dbname      = "postgres"
 )
 
 type album struct {
@@ -19,12 +31,29 @@ var albums = []album{
 	{ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
 }
 
+func CheckError(err error) {
+    if err != nil {
+        panic(err)
+    }
+}
+
 func main() {
+    // connection string
+    psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname);
+    // open database
+    db, err := sql.Open("postgres", psqlconn)
+    CheckError(err)
+    // close database
+    defer db.Close()
+    // check db
+    err = db.Ping()
+    CheckError(err)
+    fmt.Println("Connected to database " + host + " on port " + strconv.Itoa(port))
+
 	router := gin.Default()
 	router.GET("/albums", getAlbums)
 	router.GET("/albums/:id", getAlbumByID)
 	router.POST("/albums", postAlbums)
-
 	router.Run("0.0.0.0:80")
 }
 

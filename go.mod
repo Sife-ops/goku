@@ -2,7 +2,10 @@ module api
 
 go 1.17
 
-require github.com/gin-gonic/gin v1.7.4
+require (
+	github.com/gin-gonic/gin v1.7.4
+	github.com/lib/pq v1.10.2
+)
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
