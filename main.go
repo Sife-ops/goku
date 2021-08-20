@@ -19,5 +19,5 @@ func main() {
 	router.PUT("/accounts/:id", controllers.UpdateAccount)
 	router.DELETE("/accounts/:id", controllers.DeleteAccount)
 
-	router.Run("0.0.0.0:" + os.Getenv("APP_PORT"))
+	router.Run("0.0.0.0:" + os.Getenv("DOCKER_PORT"))
 }
