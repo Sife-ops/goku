@@ -1,21 +1,16 @@
 package main
 
 import (
-    "strconv"
+	// "strconv"
+	"fmt"
 	"net/http"
-	"github.com/gin-gonic/gin"
-    "database/sql"
-    "fmt"
-    _ "github.com/lib/pq"
-)
 
-// postgres01 on eltreum
-const (
-    host        = "207.246.94.25"
-    port        = 5433
-    user        = "postgres"
-    password    = "postgres"
-    dbname      = "postgres"
+	"github.com/gin-gonic/gin"
+
+	// "fmt"
+	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type album struct {
@@ -31,30 +26,48 @@ var albums = []album{
 	{ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
 }
 
-func CheckError(err error) {
-    if err != nil {
-        panic(err)
-    }
+type Product struct {
+  gorm.Model
+  ID	uint	`json:"id" gorm:"primary_key"`
+  Name  string	`json:"name"`
+  Price uint 	`json:"price"`
+}
+
+var DB *gorm.DB
+func OpenConnection() {
+	dsn := "host=207.246.94.25 user=postgres password=postgres dbname=postgres port=5433 sslmode=disable TimeZone=Asia/Shanghai"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic("failed" + db.Name());
+	}
+	// db.AutoMigrate(&Product{})
+	DB = db
 }
 
 func main() {
-    // connection string
-    psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname);
-    // open database
-    db, err := sql.Open("postgres", psqlconn)
-    CheckError(err)
-    // close database
-    defer db.Close()
-    // check db
-    err = db.Ping()
-    CheckError(err)
-    fmt.Println("Connected to database " + host + " on port " + strconv.Itoa(port))
 
 	router := gin.Default()
+
+	OpenConnection();
+    DB.Create(&Product{Name: "Steak", Price: 500})
+    DB.Create(&Product{Name: "Steak", Price: 500})
+    DB.Create(&Product{Name: "Steak", Price: 500})
+    DB.Create(&Product{Name: "Steak", Price: 500})
+    DB.Create(&Product{Name: "Steak", Price: 500})
+    DB.Create(&Product{Name: "Steak", Price: 500})
+
+	router.GET("/products", getProducts)
 	router.GET("/albums", getAlbums)
 	router.GET("/albums/:id", getAlbumByID)
 	router.POST("/albums", postAlbums)
 	router.Run("0.0.0.0:80")
+}
+
+func getProducts(c *gin.Context) {
+	var products []Product
+	DB.Find(&products)
+	fmt.Println(products)
+	c.IndentedJSON(http.StatusOK, products)
 }
 
 func getAlbums(c *gin.Context) {
@@ -63,13 +76,11 @@ func getAlbums(c *gin.Context) {
 
 func postAlbums(c *gin.Context) {
 	var newAlbum album
-
 	// Call BindJSON to bind the received JSON to
 	// newAlbum.
 	if err := c.BindJSON(&newAlbum); err != nil {
 		return
 	}
-
 	// Add the new album to the slice.
 	albums = append(albums, newAlbum)
 	c.IndentedJSON(http.StatusCreated, newAlbum)
@@ -77,7 +88,6 @@ func postAlbums(c *gin.Context) {
 
 func getAlbumByID(c *gin.Context) {
 	id := c.Param("id")
-
 	// Loop over the list of albums, looking for
 	// an album whose ID value matches the parameter.
 	for _, a := range albums {
