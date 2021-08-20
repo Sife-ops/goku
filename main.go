@@ -1,44 +1,20 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"whatsinme-api/models"
+	"whatsinme-api/controllers"
 )
 
 func main() {
-
 	router := gin.Default()
 
 	models.OpenConnection()
 	// models.DB.Create(&models.Account{Email: "bill@gates.com", Password: "pass"})
 
-	router.GET("/accounts", getAccounts)
-	router.GET("/accounts/:id", getAccount)
-	router.POST("/accounts", postAccount)
+	router.GET("/accounts", controllers.GetAccounts)
+	router.GET("/accounts/:id", controllers.GetAccount)
+	router.POST("/accounts", controllers.PostAccount)
 
 	router.Run("0.0.0.0:80")
-}
-
-func getAccounts(c *gin.Context) {
-	var accounts []models.Account
-	models.DB.Find(&accounts)
-	fmt.Println(accounts)
-	c.IndentedJSON(http.StatusOK, accounts)
-}
-
-func getAccount(c *gin.Context) {
-	id := c.Param("id")
-	var account models.Account
-	models.DB.First(&account, id)
-	c.IndentedJSON(http.StatusOK, account)
-}
-
-func postAccount(c *gin.Context) {
-	var newAccount models.Account
-	if err := c.BindJSON(&newAccount); err != nil {
-		return
-	}
-	models.DB.Create(&newAccount)
 }
