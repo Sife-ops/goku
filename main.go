@@ -1,16 +1,13 @@
 package main
 
 import (
-	// "strconv"
 	"fmt"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
-
-	// "fmt"
-	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"net/http"
+	// "strconv"
+	_ "github.com/lib/pq"
 )
 
 type album struct {
@@ -49,17 +46,11 @@ func main() {
 	router := gin.Default()
 
 	OpenConnection();
-    DB.Create(&Product{Name: "Steak", Price: 500})
-    DB.Create(&Product{Name: "Steak", Price: 500})
-    DB.Create(&Product{Name: "Steak", Price: 500})
-    DB.Create(&Product{Name: "Steak", Price: 500})
-    DB.Create(&Product{Name: "Steak", Price: 500})
-    DB.Create(&Product{Name: "Steak", Price: 500})
+    // DB.Create(&Product{Name: "Steak", Price: 500})
 
 	router.GET("/products", getProducts)
-	router.GET("/albums", getAlbums)
-	router.GET("/albums/:id", getAlbumByID)
-	router.POST("/albums", postAlbums)
+	// router.GET("/albums/:id", getAlbumByID)
+	// router.POST("/albums", postAlbums)
 	router.Run("0.0.0.0:80")
 }
 
@@ -68,33 +59,4 @@ func getProducts(c *gin.Context) {
 	DB.Find(&products)
 	fmt.Println(products)
 	c.IndentedJSON(http.StatusOK, products)
-}
-
-func getAlbums(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, albums)
-}
-
-func postAlbums(c *gin.Context) {
-	var newAlbum album
-	// Call BindJSON to bind the received JSON to
-	// newAlbum.
-	if err := c.BindJSON(&newAlbum); err != nil {
-		return
-	}
-	// Add the new album to the slice.
-	albums = append(albums, newAlbum)
-	c.IndentedJSON(http.StatusCreated, newAlbum)
-}
-
-func getAlbumByID(c *gin.Context) {
-	id := c.Param("id")
-	// Loop over the list of albums, looking for
-	// an album whose ID value matches the parameter.
-	for _, a := range albums {
-		if a.ID == id {
-			c.IndentedJSON(http.StatusOK, a)
-			return
-		}
-	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
 }
