@@ -15,6 +15,7 @@ func main() {
 
 	router.GET("/accounts", controllers.GetAccounts)
 	router.GET("/accounts/:id", controllers.GetAccount)
+	router.PUT("/accounts/:id", controllers.UpdateAccount)
 	router.POST("/accounts", controllers.PostAccount)
 
 	router.Run("0.0.0.0:" + os.Getenv("APP_PORT"))

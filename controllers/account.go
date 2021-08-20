@@ -21,6 +21,31 @@ func GetAccount(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, account)
 }
 
+func UpdateAccount(c *gin.Context) {
+	id := c.Param("id")
+
+	var account models.Account
+	models.DB.First(&account, id)
+
+	var newAccount models.Account
+	if err := c.BindJSON(&newAccount); err != nil {
+		return
+	}
+
+	if newAccount.Email != "" ||
+		newAccount.Password != "" {
+		if newAccount.Email != "" {
+			account.Email = newAccount.Email
+		}
+		if newAccount.Password != "" {
+			account.Password = newAccount.Password
+		}
+		models.DB.Save(&account)
+	}
+
+	c.IndentedJSON(http.StatusOK, account)
+}
+
 func PostAccount(c *gin.Context) {
 	var newAccount models.Account
 	if err := c.BindJSON(&newAccount); err != nil {
