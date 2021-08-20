@@ -1,4 +1,4 @@
-module api
+module whatsinme-api
 
 go 1.17
 

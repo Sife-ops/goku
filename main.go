@@ -3,11 +3,12 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/postgres"
+	// "gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"net/http"
 	// "strconv"
-	_ "github.com/lib/pq"
+	// "github.com/lib/pq"
+	"whatsinme-api/models"
 )
 
 type album struct {
@@ -30,23 +31,16 @@ type Product struct {
   Price uint 	`json:"price"`
 }
 
-var DB *gorm.DB
-func OpenConnection() {
-	dsn := "host=207.246.94.25 user=postgres password=postgres dbname=postgres port=5433 sslmode=disable TimeZone=Asia/Shanghai"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		panic("failed" + db.Name());
-	}
-	// db.AutoMigrate(&Product{})
-	DB = db
-}
-
 func main() {
 
 	router := gin.Default()
 
-	OpenConnection();
-    // DB.Create(&Product{Name: "Steak", Price: 500})
+	models.OpenConnection();
+    models.DB.Create(&models.Login{Email: "bill@gates.com", Password: "pass"})
+    models.DB.Create(&models.Login{Email: "bill@gates.com", Password: "pass"})
+    models.DB.Create(&models.Login{Email: "bill@gates.com", Password: "pass"})
+    models.DB.Create(&models.Login{Email: "bill@gates.com", Password: "pass"})
+    models.DB.Create(&models.Login{Email: "bill@gates.com", Password: "pass"})
 
 	router.GET("/products", getProducts)
 	// router.GET("/albums/:id", getAlbumByID)
@@ -56,7 +50,7 @@ func main() {
 
 func getProducts(c *gin.Context) {
 	var products []Product
-	DB.Find(&products)
+	models.DB.Find(&products)
 	fmt.Println(products)
 	c.IndentedJSON(http.StatusOK, products)
 }
