@@ -1,14 +1,12 @@
 package controllers
 
 import (
-	// "fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"net/http"
 	"whatsinme-api/models"
 )
 
-// var hmacSecret []byte
 var hmacSecret = []byte("temp")
 
 func Login(c *gin.Context) {
@@ -25,10 +23,9 @@ func Login(c *gin.Context) {
 		if err != nil {
 			return
 		}
-		// fmt.Printf("_%s_\n", tokenString)
 		c.IndentedJSON(http.StatusOK, tokenString)
 	} else {
+		// send back WWW-Authenticate header?
 		return
-		// c.IndentedJSON(http.StatusUnauthorized, "false")
 	}
 }
