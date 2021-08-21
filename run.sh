@@ -2,6 +2,7 @@
 . ./.env
 export HOST_PORT=${HOST_PORT:-80}
 docker build -t yw/goku:dev . || exit 1
+docker rmi -f $(docker images -f "dangling=true" -q)
 docker run \
         -e DOCKER_PORT=${DOCKER_PORT} \
         -e POSTGRES_DBNAME=${POSTGRES_DBNAME} \
