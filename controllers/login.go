@@ -29,6 +29,6 @@ func Login(c *gin.Context) {
 		c.IndentedJSON(http.StatusOK, tokenString)
 	} else {
 		// send back WWW-Authenticate header?
-		return
+		c.AbortWithStatus(http.StatusUnauthorized)
 	}
 }
