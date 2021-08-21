@@ -3,9 +3,13 @@ package controllers
 import (
 	// "fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt"
 	"net/http"
 	"whatsinme-api/models"
 )
+
+// var hmacSecret []byte
+var hmacSecret = []byte("temp")
 
 func Login(c *gin.Context) {
 	var credentials models.Account
@@ -16,8 +20,15 @@ func Login(c *gin.Context) {
 	var account models.Account
 	models.DB.Where("email = ?", credentials.Email).First(&account)
 	if credentials.Password == account.Password {
-		c.IndentedJSON(http.StatusOK, "true")
+		token := jwt.New(jwt.SigningMethodHS256)
+		tokenString, err := token.SignedString(hmacSecret)
+		if err != nil {
+			return
+		}
+		// fmt.Printf("_%s_\n", tokenString)
+		c.IndentedJSON(http.StatusOK, tokenString)
 	} else {
-		c.IndentedJSON(http.StatusUnauthorized, "false")
+		return
+		// c.IndentedJSON(http.StatusUnauthorized, "false")
 	}
 }
