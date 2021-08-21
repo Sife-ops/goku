@@ -1,13 +1,14 @@
 package controllers
 
 import (
+	"os"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"net/http"
 	"whatsinme-api/models"
 )
 
-var hmacSecret = []byte("temp")
+var hmacSecret = []byte(os.Getenv("JWT"))
 
 func Login(c *gin.Context) {
 	var credentials models.Account
@@ -18,7 +19,9 @@ func Login(c *gin.Context) {
 	var account models.Account
 	models.DB.Where("email = ?", credentials.Email).First(&account)
 	if credentials.Password == account.Password {
-		token := jwt.New(jwt.SigningMethodHS256)
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+			"email": account.Email,
+		})
 		tokenString, err := token.SignedString(hmacSecret)
 		if err != nil {
 			return
