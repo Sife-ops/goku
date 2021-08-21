@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"whatsinme-api/models"
+	"goku/models"
 )
 
 func GetAccounts(c *gin.Context) {

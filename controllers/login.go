@@ -3,8 +3,8 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	. "whatsinme-api/models"
-	. "whatsinme-api/utilities"
+	. "goku/models"
+	. "goku/utilities"
 )
 
 func Login(c *gin.Context) {

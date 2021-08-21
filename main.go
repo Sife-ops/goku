@@ -1,10 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v7"
+	// "github.com/twinj/uuid"
+	"goku/controllers"
+	"goku/models"
 	"os"
-	"whatsinme-api/controllers"
-	"whatsinme-api/models"
 )
 
 func main() {
@@ -23,3 +26,24 @@ func main() {
 
 	router.Run("0.0.0.0:" + os.Getenv("DOCKER_PORT"))
 }
+
+// EXPERIMENTAL
+var client *redis.Client
+
+func init() {
+	//Initializing redis
+	// dsn := os.Getenv("REDIS_DSN")
+	// if len(dsn) == 0 {
+	dsn := "localhost:6379"
+	// }
+	client = redis.NewClient(&redis.Options{
+		Addr: dsn, //redis port
+	})
+	asdf, err := client.Ping().Result()
+	if err != nil {
+		panic(err)
+	} else {
+		fmt.Println(asdf)
+	}
+}
+// EXPERIMENTAL
