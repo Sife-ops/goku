@@ -21,5 +21,4 @@ func OpenConnection() {
 	}
 	// db.AutoMigrate(&Account{})
 	DB = db
-	// return db
 }
