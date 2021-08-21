@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v7"
-	// "github.com/twinj/uuid"
 	"goku/controllers"
 	"goku/models"
 	"os"
@@ -39,11 +38,11 @@ func init() {
 	client = redis.NewClient(&redis.Options{
 		Addr: dsn, //redis port
 	})
-	asdf, err := client.Ping().Result()
+	pong, err := client.Ping().Result()
 	if err != nil {
 		panic(err)
 	} else {
-		fmt.Println(asdf)
+		fmt.Println(pong)
 	}
 }
 // EXPERIMENTAL
