@@ -10,6 +10,8 @@ docker run \
         -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
         -e POSTGRES_PORT=${POSTGRES_PORT} \
         -e POSTGRES_USER=${POSTGRES_USER} \
+        -e ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET} \
+        -e REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET} \
         --rm \
         -p ${HOST_PORT}:${DOCKER_PORT} \
         --name goku \

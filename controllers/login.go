@@ -8,7 +8,7 @@ import (
 	"whatsinme-api/models"
 )
 
-var hmacSecret = []byte(os.Getenv("JWT"))
+var hmacSecret = []byte(os.Getenv("ACCESS_TOKEN_SECRET"))
 
 func Login(c *gin.Context) {
 	var credentials models.Account
