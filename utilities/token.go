@@ -5,6 +5,7 @@ import (
 	"github.com/twinj/uuid"
 	"os"
 	"time"
+	// "strconv"
 )
 
 type TokenDetails struct {
@@ -36,7 +37,7 @@ func CreateToken(accountId uint) (*TokenDetails, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// refresh token
 	rtClaims := jwt.MapClaims{}
 	rtClaims["account_id"] = accountId
@@ -50,3 +51,19 @@ func CreateToken(accountId uint) (*TokenDetails, error) {
 
 	return tokenDetails, nil
 }
+
+// func CreateAuth(userid uint64, td *TokenDetails) error {
+//  at := time.Unix(td.AtExpires, 0) //converting Unix to UTC(to Time object)
+//  rt := time.Unix(td.RtExpires, 0)
+//  now := time.Now()
+
+//  errAccess := client.Set(td.AccessUuid, strconv.Itoa(int(userid)), at.Sub(now)).Err()
+//  if errAccess != nil {
+//   return errAccess
+//  }
+//  errRefresh := client.Set(td.RefreshUuid, strconv.Itoa(int(userid)), rt.Sub(now)).Err()
+//  if errRefresh != nil {
+//   return errRefresh
+//  }
+//  return nil
+// }
