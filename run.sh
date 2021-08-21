@@ -4,7 +4,7 @@
 HOST_PORT=${HOST_PORT:-80} # override with PORT=<port>
 
 dev(){
-    go run main.go
+    DOCKER_PORT=${HOST_PORT} go run main.go
 }
 
 prod(){
