@@ -23,12 +23,19 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	token, err := CreateToken(account.ID)
+	tokens, err := CreateToken(account.ID)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, err.Error())
 		return
 	}
+
+	saveErr := CreateAuth(account.ID, tokens)
+	if saveErr != nil {
+		c.JSON(http.StatusUnprocessableEntity, saveErr.Error())
+	}
+
 	c.IndentedJSON(http.StatusOK, gin.H{
-		"accessToken": token,
+		"access_token": tokens.AccessToken,
+		"refresh_token": tokens.RefreshToken,
 	})
 }
