@@ -19,7 +19,7 @@ func OpenConnection() {
 	if err != nil {
 		panic("failed" + db.Name())
 	}
-	db.AutoMigrate(&Account{})
+	// db.AutoMigrate(&Account{})
 	DB = db
 	// return db
 }
