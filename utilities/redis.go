@@ -6,15 +6,11 @@ import (
 )
 
 var client *redis.Client
-
 func init() {
-	//Initializing redis
-	// dsn := os.Getenv("REDIS_DSN")
-	// if len(dsn) == 0 {
-	dsn := "localhost:6379"
-	// }
 	client = redis.NewClient(&redis.Options{
-		Addr: dsn, //redis port
+		Addr: "localhost:6379",
+		Password: "",
+		DB: 0,
 	})
 	pong, err := client.Ping().Result()
 	if err != nil {
